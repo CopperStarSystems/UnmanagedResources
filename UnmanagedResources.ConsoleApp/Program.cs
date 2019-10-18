@@ -17,8 +17,11 @@ namespace UnmanagedResources.ConsoleApp
 
         private static void DoWork()
         {
-            var leaker = new Leaker();
-            Console.WriteLine("New Leaker loaded.  Press X to exit, or press any other key to load another Leaker.");
+            using (var leaker = new Leaker())
+            {
+                Console.WriteLine(
+                    "New Leaker loaded.  Press X to exit, or press any other key to load another Leaker.");
+            }
         }
     }
 }
