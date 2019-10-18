@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using UnmanagedResources.ConsoleApp.SafeHandles;
 
 namespace UnmanagedResources.ConsoleApp
@@ -9,7 +10,9 @@ namespace UnmanagedResources.ConsoleApp
 
         public Leaker()
         {
-            buffer = new SafeUnmanagedMemoryHandle(Marshal.AllocHGlobal(1024 * 1024), true);
+            int bufferSize = 1024 * 1024;
+            buffer = new SafeUnmanagedMemoryHandle(Marshal.AllocHGlobal(bufferSize), bufferSize, true);
+            GC.AddMemoryPressure(1024*1024);
         }
     }
 }

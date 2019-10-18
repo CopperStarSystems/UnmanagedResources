@@ -7,11 +7,14 @@ namespace UnmanagedResources.ConsoleApp.SafeHandles
     internal sealed class SafeUnmanagedMemoryHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
         internal SafeUnmanagedMemoryHandle() : base(true) { }
+        private int bufferSize;
 
-        internal SafeUnmanagedMemoryHandle(IntPtr preexistingHandle, bool ownsHandle)
+        internal SafeUnmanagedMemoryHandle(IntPtr preexistingHandle, int bufferSize, bool ownsHandle)
             : base(ownsHandle)
         {
             SetHandle(preexistingHandle);
+            this.bufferSize = bufferSize;   
+            GC.AddMemoryPressure(bufferSize);
         }
 
         override protected bool ReleaseHandle()
@@ -27,10 +30,11 @@ namespace UnmanagedResources.ConsoleApp.SafeHandles
 
                 // Free the handle.
                 Marshal.FreeHGlobal(handle);
-
+                
                 // Set the handle to zero.
                 handle = IntPtr.Zero;
 
+                GC.RemoveMemoryPressure(bufferSize);
                 // Return success.
                 return true;
             }

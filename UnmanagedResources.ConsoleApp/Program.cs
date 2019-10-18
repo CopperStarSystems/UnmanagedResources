@@ -9,29 +9,14 @@ namespace UnmanagedResources.ConsoleApp
 
         private static void Main(string[] args)
         {
-            CreateTimer();
-
             Console.WriteLine("Press any key to start.");
-
+            Console.ReadKey();
             while (Console.ReadKey().Key != ConsoleKey.X) DoWork();
-
+            
             Console.WriteLine("Finished loading, check your memory and press any key to exit.");
             Console.ReadKey();
         }
-
-        private static void CreateTimer()
-        {
-            timer = new Timer(10000) {AutoReset = true, Enabled = true};
-            timer.Elapsed += Timer_Elapsed;
-        }
-
-        private static void Timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            // Note:  This is only here so we can forcibly trigger GC so we can see the effects without having to wait for automatic GC.
-            // This would not belong in production code.
-            GC.Collect();
-        }
-
+        
         private static void DoWork()
         {
             var leaker = new Leaker();
