@@ -15,8 +15,7 @@ namespace UnmanagedResources.ConsoleApp
 
         private void ReleaseUnmanagedResources()
         {
-            // This is just so we can see the freeing in the memory profiler.
-            Thread.Sleep(1000);
+            Console.WriteLine("In Leaker.ReleaseUnmanagedResources");
             Marshal.FreeHGlobal(buffer);
         }
 
@@ -28,6 +27,7 @@ namespace UnmanagedResources.ConsoleApp
 
         ~Leaker()
         {
+            Console.WriteLine("In Leaker Finalizer.");
             ReleaseUnmanagedResources();
         }
     }
