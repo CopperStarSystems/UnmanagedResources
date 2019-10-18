@@ -13,8 +13,11 @@ namespace UnmanagedResources.ConsoleApp
             
             while (Console.ReadKey().Key != ConsoleKey.X)
             {
-                var leaker = new Leaker();
-                Console.WriteLine("New Leaker loaded.  Press X to exit, or press any other key to load another Leaker.");
+                using (var leaker = new Leaker())
+                {
+                    Console.WriteLine(
+                        "New Leaker loaded.  Press X to exit, or press any other key to load another Leaker.");
+                }
             }
 
             Console.WriteLine("Finished loading, check your memory and press any key to exit.");
