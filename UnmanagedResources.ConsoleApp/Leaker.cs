@@ -12,7 +12,6 @@ namespace UnmanagedResources.ConsoleApp
         {
             int bufferSize = 1024 * 1024;
             buffer = new SafeUnmanagedMemoryHandle(Marshal.AllocHGlobal(bufferSize), bufferSize, true);
-            GC.AddMemoryPressure(1024*1024);
         }
     }
 }
