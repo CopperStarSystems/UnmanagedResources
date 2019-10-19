@@ -6,18 +6,22 @@ namespace UnmanagedResources.ConsoleApp.SafeHandles
 {
     internal sealed class SafeUnmanagedMemoryHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
-        internal SafeUnmanagedMemoryHandle() : base(true) { }
-        private int bufferSize;
+        private readonly int bufferSize;
 
-        internal SafeUnmanagedMemoryHandle(IntPtr preexistingHandle, int bufferSize, bool ownsHandle)
+        internal SafeUnmanagedMemoryHandle() : base(true)
+        {
+        }
+
+        internal SafeUnmanagedMemoryHandle(int bufferSize, bool ownsHandle)
             : base(ownsHandle)
         {
+            var preexistingHandle = Marshal.AllocHGlobal(bufferSize);
             SetHandle(preexistingHandle);
-            this.bufferSize = bufferSize;   
+            this.bufferSize = bufferSize;
             GC.AddMemoryPressure(bufferSize);
         }
 
-        override protected bool ReleaseHandle()
+        protected override bool ReleaseHandle()
         {
             // "handle" is the internal
             // value for the IntPtr handle.
@@ -27,10 +31,9 @@ namespace UnmanagedResources.ConsoleApp.SafeHandles
             Console.WriteLine("In SafeUnmanagedMemoryHandle.ReleaseHandle.");
             if (handle != IntPtr.Zero)
             {
-
                 // Free the handle.
                 Marshal.FreeHGlobal(handle);
-                
+
                 // Set the handle to zero.
                 handle = IntPtr.Zero;
 
