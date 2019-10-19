@@ -11,7 +11,7 @@ namespace UnmanagedResources.ConsoleApp
         public Leaker()
         {
             int bufferSize = 1024 * 1024;
-            buffer = new SafeUnmanagedMemoryHandle(bufferSize, true);
+            buffer = new SafeUnmanagedMemoryHandle(bufferSize);
         }
     }
 }

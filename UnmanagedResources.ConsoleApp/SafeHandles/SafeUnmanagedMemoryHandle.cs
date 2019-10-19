@@ -12,8 +12,8 @@ namespace UnmanagedResources.ConsoleApp.SafeHandles
         {
         }
 
-        internal SafeUnmanagedMemoryHandle(int bufferSize, bool ownsHandle)
-            : base(ownsHandle)
+        internal SafeUnmanagedMemoryHandle(int bufferSize)
+            : this()
         {
             var preexistingHandle = Marshal.AllocHGlobal(bufferSize);
             SetHandle(preexistingHandle);
